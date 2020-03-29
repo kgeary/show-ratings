@@ -1,0 +1,41 @@
+{
+  "name": "episode-ratings",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run start",
+    "install": "cd client && npm install",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kgeary/episode-ratings.git"
+  },
+  "keywords": [
+    "Episode",
+    "Ratings"
+  ],
+  "author": "Kevin Geary",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kgeary/episode-ratings/issues"
+  },
+  "homepage": "https://github.com/kgeary/episode-ratings#readme",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "if-env": "^1.0.4",
+    "imdb-api": "^4.0.3",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "nodemon": "^2.0.2"
+  }
+}
