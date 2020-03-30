@@ -21,6 +21,13 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#CCC",
       color: "#333",
     },
+    '& .episode-link': {
+      paddingLeft: "1rem",
+      textDecoration: "underline",
+    },
+    '& .episode-link:hover': {
+      color: "blue",
+    },
   },
 }));
 
@@ -31,17 +38,22 @@ export default function Stats(props) {
   const min = ratings ? Math.min(...ratings) : 0;
   const max = ratings ? Math.max(...ratings) : 0;
 
+  const getEpisodeIndex = (episode) => {
+    return props.episodes.findIndex(i => i.imdbid === episode.imdbid)
+  }
+
   const getEpisode = (score) => {
     if (!isFinite(score) || isNaN(score)) return "";
 
-    const episodes = props.episodes
+    return props.episodes
       .filter(episode => episode.rating === score)
       .map(episode => {
-        return `S${episode.season}:E${episode.episode} - ${episode.title}`
-      })
-      .join(", ");
-
-    return `(${episodes})`;
+        return <span
+          className="episode-link"
+          onMouseEnter={() => props.setFocusBar(getEpisodeIndex(episode))}
+          onMouseLeave={() => props.setFocusBar(null)}
+        >S{episode.season}:E{episode.episode} - {episode.title}</span>
+      });
   }
 
   const getSeasons = () => {

@@ -28,7 +28,6 @@ const useStyles = makeStyles((props) => ({
         }
       }
       : {
-        display: "block",
         height: "100vh",
         backgroundColor: "#FFF",
         display: "flex",

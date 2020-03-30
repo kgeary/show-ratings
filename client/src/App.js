@@ -9,6 +9,7 @@ import axios from 'axios';
 function App() {
   const [title, setTitle] = useState("Game of Thrones");
   const [episodes, setEpisodes] = useState([]);
+  const [focusBar, setFocusBar] = useState(null);
 
   const updateShow = (e) => {
     setEpisodes([]);
@@ -29,11 +30,9 @@ function App() {
   return (
     <div className="App">
       <Search value={title} onChange={updateShow} />
-      <Container>
-        {title ? <h1 style={{ textAlign: "center" }}>{`Ratings for "${title}"`}</h1> : null}
-        <Chart showSeason={true} showAvg={false} data={episodes} />
-        <Stats episodes={episodes} />
-      </Container>
+      {title ? <h1 style={{ textAlign: "center" }}>{`Ratings for "${title}"`}</h1> : null}
+      <Chart showSeason={true} showAvg={false} data={episodes} focusBar={focusBar} setFocusBar={setFocusBar} />
+      <Stats episodes={episodes} setFocusBar={setFocusBar} />
     </div>
   );
 }

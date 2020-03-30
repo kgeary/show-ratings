@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, CartesianGrid, ReferenceLine } from 'recharts';
 import CustomTooltip from "./CustomTooltip";
 import { interpolateRgb } from "d3-interpolate";
 
 export default function Chart(props) {
-
   const data = props.data.map(episode => {
     return {
       rating: parseFloat(episode.rating),
@@ -34,14 +33,13 @@ export default function Chart(props) {
 
   const getBarData = () => {
     return data.map((entry, index) => (
-      <Cell key={`cell-${index}`} fill={interpolateColor(entry.rating)} onClick={() => window.open(entry.url)} />
+      <Cell key={`cell-${index}`} fill={props.focusBar === index ? "url(#activeBar)" : interpolateColor(entry.rating)} onClick={() => window.open(entry.url)} />
     ));
   }
 
   const getRangeY = () => {
     const minVal = (min > 2) ? parseInt(min - 2) : 0;
     const maxVal = (max < 8) ? parseInt(max + 2) : 10;
-    console.log("GRY", minVal, maxVal);
 
     return [minVal, maxVal];
   }
@@ -80,16 +78,53 @@ export default function Chart(props) {
   if (data.length < 1) return null;
 
   return (
-    <ResponsiveContainer width="90%" height={300}>
+    <ResponsiveContainer width="95%" height={300}>
       <BarChart
         data={data}
         barCategoryGap="0"
-        margin={{ top: 25, right: 20, left: 30, bottom: 25 }}
+        margin={{ top: 25, right: 10, left: 30, bottom: 25 }}
+        onMouseMove={state => {
+          if (state.isTooltipActive) {
+            props.setFocusBar(state.activeTooltipIndex);
+          } else {
+            props.setFocusBar(null);
+          }
+        }}
+        onMouseLeave={() => {
+          props.setFocusBar(null);
+        }}
       >
-        <XAxis dataKey="id" label={{ value: "Season:Episode", dy: 20 }} />
-        <YAxis type="number" domain={getRangeY()} label={{ value: "Rating", dx: -30, dy: -10 }} />
-        <Tooltip content={<CustomTooltip />} />
+        <XAxis
+          dataKey="id"
+          label={{
+            value: "Season:Episode",
+            dy: 20
+          }}
+        />
+        <YAxis
+          type="number"
+          domain={getRangeY()}
+          label={{
+            value: "Rating",
+            dx: -20,
+            dy: -10,
+            angle: 90,
+            textAnchor: "end"
+          }}
+        />
+        <Tooltip
+          content={<CustomTooltip />}
+          animationBegin={1000}
+          animationEasing={'ease-in-out'}
+        />
         <CartesianGrid stroke="#f5f5f5" />
+        <defs>
+          <linearGradient id="activeBar" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stopColor="silver" />
+            <stop offset="50%" stopColor="blue" />
+            <stop offset="100%" stopColor="navy" />
+          </linearGradient>
+        </defs>
         <Bar type="monotone" dataKey="rating" stroke="#000">
           {getBarData()}
         </Bar>
