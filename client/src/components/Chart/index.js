@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, CartesianGrid, ReferenceLine } from 'recharts';
 import CustomTooltip from "./CustomTooltip";
 import { interpolateRgb } from "d3-interpolate";
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+  }
+}));
 
 export default function Chart(props) {
+  const classes = useStyles();
   const data = props.data.map(episode => {
     return {
       rating: parseFloat(episode.rating),
@@ -55,7 +62,7 @@ export default function Chart(props) {
         const refLine = <ReferenceLine
           key={entry.id}
           x={entry.id}
-          label={{ value: `S${entry.season}`, position: "top" }}
+          label={{ value: `S${entry.season}`, position: "top", dy: -10 }}
           stroke="blue"
           strokeDasharray="3 3"
         />
@@ -78,11 +85,11 @@ export default function Chart(props) {
   if (data.length < 1) return null;
 
   return (
-    <ResponsiveContainer width="95%" height={300}>
+    <ResponsiveContainer width="95%" height={300} className={classes.root}>
       <BarChart
         data={data}
         barCategoryGap="0"
-        margin={{ top: 25, right: 10, left: 30, bottom: 25 }}
+        margin={{ top: 30, right: 30, left: 30, bottom: 30 }}
         onMouseMove={state => {
           if (state.isTooltipActive) {
             props.setFocusBar(state.activeTooltipIndex);
@@ -98,18 +105,21 @@ export default function Chart(props) {
           dataKey="id"
           label={{
             value: "Season:Episode",
-            dy: 20
+            dy: 20,
+            style: { fontWeight: "bold" },
           }}
         />
         <YAxis
           type="number"
           domain={getRangeY()}
+          dx={-10}
           label={{
             value: "Rating",
             dx: -20,
             dy: -10,
             angle: 90,
-            textAnchor: "end"
+            textAnchor: "end",
+            style: { fontWeight: "bold" },
           }}
         />
         <Tooltip

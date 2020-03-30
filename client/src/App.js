@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container } from '@material-ui/core'
 import Search from './components/Search';
 import Stats from './components/Stats';
 import Chart from './components/Chart';
 import axios from 'axios';
-
 
 function App() {
   const [title, setTitle] = useState("Game of Thrones");
