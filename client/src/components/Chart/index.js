@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Chart(props) {
   const classes = useStyles();
-  const data = props.data.map(episode => {
+  const episodes = props.episodes.map(episode => {
     return {
       rating: parseFloat(episode.rating),
       season: parseInt(episode.season),
@@ -22,7 +22,7 @@ export default function Chart(props) {
     }
   });
 
-  const ratings = data.map(episode => episode.rating);
+  const ratings = episodes.map(episode => episode.rating);
   const min = Math.min(...ratings);
   const max = Math.max(...ratings);
   const avg = parseFloat(ratings.reduce((a, b) => a + b, 0) / ratings.length);
@@ -39,7 +39,7 @@ export default function Chart(props) {
   }
 
   const getBarData = () => {
-    return data.map((entry, index) => (
+    return episodes.map((entry, index) => (
       <Cell key={`cell-${index}`} fill={props.focusBar === index ? "url(#activeBar)" : interpolateColor(entry.rating)} onClick={() => window.open(entry.url)} />
     ));
   }
@@ -56,7 +56,7 @@ export default function Chart(props) {
 
     const referenceLines = [];
     let season = undefined;
-    data.forEach((entry) => {
+    episodes.forEach((entry) => {
       if (entry.season !== season) {
         season = entry.season;
         const refLine = <ReferenceLine
@@ -65,6 +65,9 @@ export default function Chart(props) {
           label={{ value: `S${entry.season}`, position: "top", dy: -10 }}
           stroke="blue"
           strokeDasharray="3 3"
+          strokeWidth="2"
+          isFront={true}
+          position={"start"}
         />
         referenceLines.push(refLine);
       }
@@ -82,12 +85,12 @@ export default function Chart(props) {
     />
   }
 
-  if (data.length < 1 || props.searching) return null;
+  if (episodes.length < 1 || props.searching) return null;
 
   return (
     <ResponsiveContainer width="95%" height={300} className={classes.root}>
       <BarChart
-        data={data}
+        data={episodes}
         barCategoryGap="0"
         margin={{ top: 30, right: 30, left: 30, bottom: 30 }}
         onMouseMove={state => {
