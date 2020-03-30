@@ -1,8 +1,10 @@
 require("dotenv").config();
 const express = require("express");
+require("express-async-errors");
 const compression = require("compression");
 const routes = require("./routes");
 const logger = require("morgan");
+const { errorHandler } = require("./utils/middleware");
 const PORT = process.env.PORT || 3001;
 
 function shouldCompress(req, res) {
@@ -17,20 +19,19 @@ function shouldCompress(req, res) {
 const app = express();
 
 // Define middleware here
-app.use(logger("dev"));
 app.use(compression({ filter: shouldCompress }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(logger("dev"));
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
-  console.log("PRODUCTION BUILD!");
   app.use(express.static("client/build"));
-} else {
-  console.log("DEV BUILD");
 }
 
 app.use(routes);
+app.use(errorHandler);
+
 
 app.listen(PORT, () => {
   console.log(`Now listening on http://localhost:${PORT}`);

@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "none",
     },
   },
+  notFound: {
+    textAlign: "center",
+  },
 }));
 
 export default function Stats(props) {
@@ -66,7 +69,13 @@ export default function Stats(props) {
     return seasons.length;
   }
 
-  if (ratings.length < 1) return null;
+  if (props.searching) {
+    return <h3 className={classes.notFound}>Searching...</h3>;
+  }
+
+  if (ratings.length < 1) {
+    return <h3 className={classes.notFound}>Not Found</h3>;
+  }
 
   return (
     <Paper className={classes.root}>
@@ -97,7 +106,7 @@ export default function Stats(props) {
               </tr>
             </tbody>
           </table>
-          : <span>Select a show</span>
+          : <h1>Select a show</h1>
       }
     </Paper >
   )

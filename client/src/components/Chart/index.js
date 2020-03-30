@@ -82,7 +82,7 @@ export default function Chart(props) {
     />
   }
 
-  if (data.length < 1) return null;
+  if (data.length < 1 || props.searching) return null;
 
   return (
     <ResponsiveContainer width="95%" height={300} className={classes.root}>
