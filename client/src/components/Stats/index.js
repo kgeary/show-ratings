@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+
+const waitArray = ["/", "-", "\\", "|"];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Stats(props) {
   const classes = useStyles();
+  const [waitState, setWaitState] = useState(0);
   const ratings = props.episodes.map(episode => parseFloat(episode.rating));
   const average = (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1);
   const min = ratings ? Math.min(...ratings) : 0;
@@ -83,12 +86,26 @@ export default function Stats(props) {
     return seasons.length;
   }
 
+  const getWaitState = () => {
+    if (!props.isSearching) {
+      setWaitState(0);
+      return waitArray[0];
+    }
+
+    let newState = waitState + 1;
+    setTimeout(() => {
+      newState >= waitArray.length ? setWaitState(0) : setWaitState(newState);
+    }, 250);
+
+    return waitArray[waitState];
+  }
+
   if (!props.title) {
     return null
   }
 
   if (props.isSearching) {
-    return <h3 className={classes.notFound}>Searching...</h3>;
+    return <h3 className={classes.notFound}>Searching...{getWaitState()}</h3>
   }
 
   if (ratings.length < 1) {
