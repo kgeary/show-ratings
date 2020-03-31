@@ -6,7 +6,7 @@ import TitleBar from './components/TitleBar';
 
 import axios from 'axios';
 
-const popularShows = ["Game of Thrones", "Seinfeld", "Friends", "The Office", "The Wire", "Big Bang Theory", "The Sopranos"];
+const popularShows = ["Game of Thrones", "Seinfeld", "Friends", "The Office", "The Wire", "Big Bang Theory", "The Sopranos", "Cheers", "Frasier", "The Simpsons"];
 const getRandomShow = () => {
   return popularShows[Math.floor(Math.random() * popularShows.length)];
 }
@@ -23,25 +23,30 @@ function App() {
     setTitle(e.target.value);
   }
 
-  const setRandom = () => {
+  const setRandom = (e) => {
+    e.preventDefault();
     setTitle(getRandomShow());
   }
 
   const getEpisodes = () => {
-    axios.get(`/api/episodes/${title}`)
-      .then(res => {
-        const episodes = res.data;
-        //console.log("NO RATING", episodes.filter(ep => isNaN(ep.rating)));
-        //console.log("RATING", episodes.filter(ep => !isNaN(ep.rating)));
-        setEpisodes(episodes.filter(episode => !isNaN(episode.rating)));
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .finally(() => {
-        // Delay clearing the search in case the user is still typing
-        setIsSearching(false);
-      })
+    if (title.trim() === "") {
+      setEpisodes([]);
+    } else {
+      axios.get(`/api/episodes/${title}`)
+        .then(res => {
+          const episodes = res.data;
+          //console.log("NO RATING", episodes.filter(ep => isNaN(ep.rating)));
+          //console.log("RATING", episodes.filter(ep => !isNaN(ep.rating)));
+          setEpisodes(episodes.filter(episode => !isNaN(episode.rating)));
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          // Delay clearing the search in case the user is still typing
+          setIsSearching(false);
+        })
+    }
   }
 
   useEffect(() => {

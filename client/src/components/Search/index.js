@@ -61,8 +61,10 @@ export default function Search(props) {
         className={classes.form}
         noValidate
         autoComplete="off"
+        onSubmit={() => { }}
       >
         <TextField
+          autoFocus
           id="search"
           label="Search By Show"
           variant="outlined"
@@ -70,6 +72,7 @@ export default function Search(props) {
           value={props.title}
           className="TextField"
           inputProps={{ maxLength: 32 }}
+          onKeyPress={(e) => { if (e.which === 13) { e.preventDefault(); } }}
           InputProps={{
             endAdornment: (
               <IconButton position="end" onClick={() => props.onChange({ target: { value: "" } })}>
@@ -81,7 +84,7 @@ export default function Search(props) {
       </form>
       <Button
         onClick={props.setRandom}
-        variant="outlined"
+        variant={props.title ? "outlined" : "contained"}
         color="primary">
         Random Show
       </Button>
