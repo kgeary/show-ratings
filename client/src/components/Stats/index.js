@@ -27,15 +27,15 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: "bold",
     },
     '& .average': {
-      backgroundColor: "yellow",
-      color: "black",
+      backgroundColor: "#EEE",
+      color: "#333",
     },
     '& .highest': {
       backgroundColor: "green",
-      color: "white",
+      color: "#EEE",
     }, '& .lowest': {
       backgroundColor: "red",
-      color: "white",
+      color: "#EEE",
     },
     '& .episode-link': {
       paddingLeft: "1rem",

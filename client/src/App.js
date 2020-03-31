@@ -3,10 +3,9 @@ import Search from './components/Search';
 import Stats from './components/Stats';
 import Chart from './components/Chart';
 import TitleBar from './components/TitleBar';
-
+import popularShows from './utils/popularShows';
 import axios from 'axios';
 
-const popularShows = ["Game of Thrones", "Seinfeld", "Friends", "The Office", "The Wire", "Big Bang Theory", "The Sopranos", "Cheers", "Frasier", "The Simpsons"];
 const getRandomShow = () => {
   return popularShows[Math.floor(Math.random() * popularShows.length)];
 }
