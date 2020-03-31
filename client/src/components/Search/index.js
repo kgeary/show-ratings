@@ -2,6 +2,7 @@ import React from 'react';
 import { TextField, IconButton } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((props) => ({
 
@@ -63,5 +64,9 @@ export default function Search(props) {
       />
     </form>
   );
+}
 
+Search.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 }

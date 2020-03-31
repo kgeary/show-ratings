@@ -3,6 +3,7 @@ import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, Cartes
 import CustomTooltip from "./CustomTooltip";
 import { interpolateRgb } from "d3-interpolate";
 import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,7 +86,7 @@ export default function Chart(props) {
     />
   }
 
-  if (episodes.length < 1 || props.searching) return null;
+  if (episodes.length < 1 || props.isSearching) return null;
 
   return (
     <ResponsiveContainer width="95%" height={300} className={classes.root}>
@@ -94,15 +95,11 @@ export default function Chart(props) {
         barCategoryGap="0"
         margin={{ top: 30, right: 30, left: 30, bottom: 30 }}
         onMouseMove={state => {
-          if (state.isTooltipActive) {
-            props.setFocusBar(state.activeTooltipIndex);
-          } else {
-            props.setFocusBar(null);
-          }
+          props.setFocusBar(state.isTooltipActive
+            ? state.activeTooltipIndex
+            : null)
         }}
-        onMouseLeave={() => {
-          props.setFocusBar(null);
-        }}
+        onMouseLeave={() => props.setFocusBar(null)}
       >
         <XAxis
           dataKey="id"
@@ -146,4 +143,13 @@ export default function Chart(props) {
       </BarChart>
     </ResponsiveContainer>
   );
+}
+
+Chart.propTypes = {
+  isSearching: PropTypes.bool.isRequired,
+  episodes: PropTypes.arrayOf(PropTypes.object),
+  focusBar: PropTypes.number,
+  setFocusBar: PropTypes.func,
+  showSeason: PropTypes.bool,
+  showAverage: PropTypes.bool,
 }

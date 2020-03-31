@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,7 +70,7 @@ export default function Stats(props) {
     return seasons.length;
   }
 
-  if (props.searching) {
+  if (props.isSearching) {
     return <h3 className={classes.notFound}>Searching...</h3>;
   }
 
@@ -110,4 +111,11 @@ export default function Stats(props) {
       }
     </Paper >
   )
+}
+
+Stats.propTypes = {
+  isSearching: PropTypes.bool.isRequired,
+  episodes: PropTypes.arrayOf(PropTypes.object),
+  focusBar: PropTypes.number,
+  setFocusBar: PropTypes.func,
 }

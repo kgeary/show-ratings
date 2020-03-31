@@ -13,7 +13,7 @@ function App() {
   const [title, setTitle] = useState(getRandomShow());
   const [episodes, setEpisodes] = useState([]);
   const [focusBar, setFocusBar] = useState(null);
-  const [searching, setSearching] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [searchTimeout, setSearchTimeout] = useState(undefined);
 
   const updateShow = (e) => {
@@ -25,8 +25,8 @@ function App() {
     axios.get(`/api/episodes/${title}`)
       .then(res => {
         const episodes = res.data;
-        console.log("NO RATING", episodes.filter(ep => isNaN(ep.rating)));
-        console.log("RATING", episodes.filter(ep => !isNaN(ep.rating)));
+        //console.log("NO RATING", episodes.filter(ep => isNaN(ep.rating)));
+        //console.log("RATING", episodes.filter(ep => !isNaN(ep.rating)));
         setEpisodes(episodes.filter(episode => !isNaN(episode.rating)));
       })
       .catch(err => {
@@ -34,12 +34,12 @@ function App() {
       })
       .finally(() => {
         // Delay clearing the search in case the user is still typing
-        setSearching(false);
+        setIsSearching(false);
       })
   }
 
   useEffect(() => {
-    setSearching(true);
+    setIsSearching(true);
     clearTimeout(searchTimeout);
     setSearchTimeout(setTimeout(() => getEpisodes(), 700));
   }, [title]);
@@ -48,8 +48,8 @@ function App() {
     <div className="App">
       <Search value={title} onChange={updateShow} />
       {title ? <h1 style={{ textAlign: "center" }}>{`Ratings for "${title}"`}</h1> : null}
-      <Chart searching={searching} episodes={episodes} showSeason={true} showAvg={false} focusBar={focusBar} setFocusBar={setFocusBar} />
-      <Stats searching={searching} episodes={episodes} setFocusBar={setFocusBar} />
+      <Chart isSearching={isSearching} episodes={episodes} showSeason={true} showAvg={false} focusBar={focusBar} setFocusBar={setFocusBar} />
+      <Stats isSearching={isSearching} episodes={episodes} setFocusBar={setFocusBar} />
     </div>
   );
 }
