@@ -31,8 +31,8 @@ export default function Chart(props) {
   const interpolateColor = (value) => {
     const startColor = "red";
     const endColor = "green";
-    const minValue = min;
-    const maxValue = max;
+    const minValue = min < 6 ? min : 6; //min;
+    const maxValue = max > 8 ? 10 : 8; // max;
 
     const percent = (value - minValue) / (maxValue - minValue)
     const iColor = interpolateRgb(startColor, endColor);
@@ -111,7 +111,10 @@ export default function Chart(props) {
         />
         <YAxis
           type="number"
-          domain={getRangeY()}
+          allowDecimals="false"
+          domain={[0, 10]}
+          ticks={[2, 4, 6, 8, 10]}
+          interval="preserveEnd"
           dx={-10}
           label={{
             value: "Rating",
