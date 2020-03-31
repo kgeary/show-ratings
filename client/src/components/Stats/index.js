@@ -24,6 +24,17 @@ const useStyles = makeStyles((theme) => ({
       color: "#333",
       fontWeight: "bold",
     },
+    '& .average': {
+      backgroundColor: "yellow",
+      color: "black",
+    },
+    '& .highest': {
+      backgroundColor: "green",
+      color: "white",
+    }, '& .lowest': {
+      backgroundColor: "red",
+      color: "white",
+    },
     '& .episode-link': {
       paddingLeft: "1rem",
     },
@@ -84,10 +95,10 @@ export default function Stats(props) {
     return <h3 className={classes.notFound}>Not Found</h3>;
   }
 
-  const getRow = (heading, data, episodes = undefined) => {
+  const getRow = (className, heading, data, episodes = undefined) => {
     return (
       <tr>
-        <td className="th">{heading}</td>
+        <td className={`th ${className}`}>{heading}</td>
         <td>
           {data}
           {
@@ -108,15 +119,15 @@ export default function Stats(props) {
           <>
             <table>
               <tbody>
-                {getRow("Episodes", ratings.length || "-")}
-                {getRow("Seasons", getSeasons() || "-")}
+                {getRow("default-th", "Episodes", ratings.length || "-")}
+                {getRow("default-th", "Seasons", getSeasons() || "-")}
               </tbody>
             </table>
             <table>
               <tbody>
-                {getRow("Average Rating", isNaN(average) ? "-" : average)}
-                {getRow("Highest Rating", !isFinite(max) ? "-" : max, getEpisode(max))}
-                {getRow("Lowest Rating", !isFinite(min) ? "-" : min, getEpisode(min))}
+                {getRow("average", "Average Rating", isNaN(average) ? "-" : average)}
+                {getRow("highest", "Highest Rating", !isFinite(max) ? "-" : max, getEpisode(max))}
+                {getRow("lowest", "Lowest Rating", !isFinite(min) ? "-" : min, getEpisode(min))}
               </tbody>
             </table>
           </>
