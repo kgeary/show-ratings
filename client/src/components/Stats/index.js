@@ -1,15 +1,16 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
     margin: "1rem auto",
-    border: "1px solid black",
     width: "fit-content",
     '& table': {
+      border: "1px solid black",
       borderCollapse: "collapse",
+      margin: "1rem",
     },
     '& td': {
       padding: "0.25rem 1rem",
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: "none",
     },
     '& .th': {
-      backgroundColor: "#CCC",
+      backgroundColor: "#EEE",
       color: "#333",
       fontWeight: "bold",
     },
@@ -71,6 +72,10 @@ export default function Stats(props) {
     return seasons.length;
   }
 
+  if (!props.title) {
+    return null
+  }
+
   if (props.isSearching) {
     return <h3 className={classes.notFound}>Searching...</h3>;
   }
@@ -96,22 +101,28 @@ export default function Stats(props) {
   }
 
   return (
-    <Paper className={classes.root}>
+    <div className={classes.root}>
       {
         ratings
           ?
-          <table>
-            <tbody>
-              {getRow("Episodes", ratings.length || "-")}
-              {getRow("Seasons", getSeasons() || "-")}
-              {getRow("Average Rating", isNaN(average) ? "-" : average)}
-              {getRow("Highest Rating", !isFinite(max) ? "-" : max, getEpisode(max))}
-              {getRow("Lowest Rating", !isFinite(min) ? "-" : min, getEpisode(min))}
-            </tbody>
-          </table>
+          <>
+            <table>
+              <tbody>
+                {getRow("Episodes", ratings.length || "-")}
+                {getRow("Seasons", getSeasons() || "-")}
+              </tbody>
+            </table>
+            <table>
+              <tbody>
+                {getRow("Average Rating", isNaN(average) ? "-" : average)}
+                {getRow("Highest Rating", !isFinite(max) ? "-" : max, getEpisode(max))}
+                {getRow("Lowest Rating", !isFinite(min) ? "-" : min, getEpisode(min))}
+              </tbody>
+            </table>
+          </>
           : <h1>Select a show</h1>
       }
-    </Paper >
+    </div >
   )
 }
 

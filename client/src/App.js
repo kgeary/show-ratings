@@ -3,6 +3,7 @@ import Search from './components/Search';
 import Stats from './components/Stats';
 import Chart from './components/Chart';
 import TitleBar from './components/TitleBar';
+
 import axios from 'axios';
 
 const popularShows = ["Game of Thrones", "Seinfeld", "Friends", "The Office", "The Wire", "Big Bang Theory", "The Sopranos"];
@@ -20,6 +21,10 @@ function App() {
   const updateShow = (e) => {
     setEpisodes([]);
     setTitle(e.target.value);
+  }
+
+  const setRandom = () => {
+    setTitle(getRandomShow());
   }
 
   const getEpisodes = () => {
@@ -49,8 +54,9 @@ function App() {
     <div className="App">
 
       <Search
-        value={title}
+        title={title}
         onChange={updateShow}
+        setRandom={setRandom}
       />
 
       <TitleBar title={title} />
@@ -65,6 +71,7 @@ function App() {
       />
 
       <Stats
+        title={title}
         isSearching={isSearching}
         episodes={episodes}
         setFocusBar={setFocusBar}

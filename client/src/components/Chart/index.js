@@ -64,7 +64,7 @@ export default function Chart(props) {
           key={entry.id}
           x={entry.id}
           label={{ value: `S${entry.season}`, position: "top", dy: -10 }}
-          stroke="blue"
+          stroke="yellow"
           strokeDasharray="3 3"
           strokeWidth="2"
           isFront={true}
@@ -111,7 +111,7 @@ export default function Chart(props) {
         />
         <YAxis
           type="number"
-          allowDecimals="false"
+          allowDecimals={false}
           domain={[0, 10]}
           ticks={[2, 4, 6, 8, 10]}
           interval="preserveEnd"

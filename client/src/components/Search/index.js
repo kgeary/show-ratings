@@ -1,15 +1,27 @@
 import React from 'react';
-import { TextField, IconButton } from '@material-ui/core';
+import { Button, TextField, IconButton } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((props) => ({
+  root: {
+    height: props => props.title ? "auto" : "100vh",
+    flexDirection: props => props.title ? "row" : "column",
+    justifyContent: props => props.title ? "space-between" : "center",
+    display: "flex",
+    alignItems: "center",
+    "& .MuiButton-root": {
+      marginRight: "1rem"
+    },
+    "& h1": {
+      display: props => props.title ? "none" : "block",
+    }
+  },
 
-  root:
-    props => props.value
+  form:
+    props => props.title
       ? {
-        backgroundColor: "#CCC",
         padding: "1rem 1rem",
         marginBottom: "1rem",
         "& .TextField": {
@@ -27,7 +39,7 @@ const useStyles = makeStyles((props) => ({
         }
       }
       : {
-        height: "100vh",
+        marginBottom: "1rem",
         backgroundColor: "#FFF",
         display: "flex",
         justifyContent: "center",
@@ -43,28 +55,37 @@ export default function Search(props) {
   const classes = useStyles(props);
 
   return (
-    <form
-      className={classes.root}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField
-        id="search"
-        label="Search By Show"
+    <div className={classes.root}>
+      <h1>Show Ratings By Episode</h1>
+      <form
+        className={classes.form}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="search"
+          label="Search By Show"
+          variant="outlined"
+          onChange={props.onChange}
+          value={props.title}
+          className="TextField"
+          inputProps={{ maxLength: 32 }}
+          InputProps={{
+            endAdornment: (
+              <IconButton position="end" onClick={() => props.onChange({ target: { value: "" } })}>
+                <ClearIcon />
+              </IconButton>
+            ),
+          }}
+        />
+      </form>
+      <Button
+        onClick={props.setRandom}
         variant="outlined"
-        onChange={props.onChange}
-        value={props.value}
-        className="TextField"
-        inputProps={{ maxLength: 32 }}
-        InputProps={{
-          endAdornment: (
-            <IconButton position="end" onClick={() => props.onChange({ target: { value: "" } })}>
-              <ClearIcon />
-            </IconButton>
-          ),
-        }}
-      />
-    </form>
+        color="primary">
+        Random Show
+      </Button>
+    </div>
   );
 }
 
