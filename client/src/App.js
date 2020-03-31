@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Search from './components/Search';
 import Stats from './components/Stats';
 import Chart from './components/Chart';
+import TitleBar from './components/TitleBar';
 import axios from 'axios';
 
 const popularShows = ["Game of Thrones", "Seinfeld", "Friends", "The Office", "The Wire", "Big Bang Theory", "The Sopranos"];
@@ -46,10 +47,29 @@ function App() {
 
   return (
     <div className="App">
-      <Search value={title} onChange={updateShow} />
-      {title ? <h1 style={{ textAlign: "center" }}>{`Ratings for "${title}"`}</h1> : null}
-      <Chart isSearching={isSearching} episodes={episodes} showSeason={true} showAvg={false} focusBar={focusBar} setFocusBar={setFocusBar} />
-      <Stats isSearching={isSearching} episodes={episodes} setFocusBar={setFocusBar} />
+
+      <Search
+        value={title}
+        onChange={updateShow}
+      />
+
+      <TitleBar title={title} />
+
+      <Chart
+        isSearching={isSearching}
+        episodes={episodes}
+        showSeason={true}
+        showAvg={false}
+        focusBar={focusBar}
+        setFocusBar={setFocusBar}
+      />
+
+      <Stats
+        isSearching={isSearching}
+        episodes={episodes}
+        setFocusBar={setFocusBar}
+      />
+
     </div>
   );
 }

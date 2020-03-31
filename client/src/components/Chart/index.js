@@ -1,6 +1,6 @@
 import React from "react";
 import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, CartesianGrid, ReferenceLine } from 'recharts';
-import CustomTooltip from "./CustomTooltip";
+import CustomTooltip from "../CustomTooltip";
 import { interpolateRgb } from "d3-interpolate";
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';

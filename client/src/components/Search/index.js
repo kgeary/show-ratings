@@ -23,9 +23,7 @@ const useStyles = makeStyles((props) => ({
           '&:hover fieldset': {
             borderColor: 'blue',
           },
-          '&.Mui-focused fieldset': {
-            borderColor: 'red',
-          },
+
         }
       }
       : {
@@ -45,7 +43,11 @@ export default function Search(props) {
   const classes = useStyles(props);
 
   return (
-    <form className={classes.root} noValidate autoComplete="off">
+    <form
+      className={classes.root}
+      noValidate
+      autoComplete="off"
+    >
       <TextField
         id="search"
         label="Search By Show"

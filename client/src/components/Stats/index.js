@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     '& .th': {
       backgroundColor: "#CCC",
       color: "#333",
+      fontWeight: "bold",
     },
     '& .episode-link': {
       paddingLeft: "1rem",
@@ -78,6 +79,22 @@ export default function Stats(props) {
     return <h3 className={classes.notFound}>Not Found</h3>;
   }
 
+  const getRow = (heading, data, episodes = undefined) => {
+    return (
+      <tr>
+        <td className="th">{heading}</td>
+        <td>
+          {data}
+          {
+            episodes
+              ? episodes
+              : null
+          }
+        </td>
+      </tr>
+    )
+  }
+
   return (
     <Paper className={classes.root}>
       {
@@ -85,26 +102,11 @@ export default function Stats(props) {
           ?
           <table>
             <tbody>
-              <tr>
-                <td className="th">Episodes</td>
-                <td>{ratings.length || "-"}</td>
-              </tr>
-              <tr>
-                <td className="th">Seasons</td>
-                <td>{getSeasons() || "-"}</td>
-              </tr>
-              <tr>
-                <td className="th">Average Rating</td>
-                <td>{isNaN(average) ? "-" : average}</td>
-              </tr>
-              <tr>
-                <td className="th">Highest Rating</td>
-                <td>{!isFinite(max) ? "-" : max} {getEpisode(max)}</td>
-              </tr>
-              <tr>
-                <td className="th">Lowest Rating</td>
-                <td>{!isFinite(min) ? "-" : min} {getEpisode(min)}</td>
-              </tr>
+              {getRow("Episodes", ratings.length || "-")}
+              {getRow("Seasons", getSeasons() || "-")}
+              {getRow("Average Rating", isNaN(average) ? "-" : average)}
+              {getRow("Highest Rating", !isFinite(max) ? "-" : max, getEpisode(max))}
+              {getRow("Lowest Rating", !isFinite(min) ? "-" : min, getEpisode(min))}
             </tbody>
           </table>
           : <h1>Select a show</h1>
