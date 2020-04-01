@@ -11,7 +11,7 @@ const getRandomShow = () => {
 }
 
 function App() {
-  const [title, setTitle] = useState(getRandomShow());
+  const [title, setTitle] = useState(window.sessionStorage.getItem("showTitle") || getRandomShow());
   const [episodes, setEpisodes] = useState([]);
   const [focusBar, setFocusBar] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
@@ -20,11 +20,16 @@ function App() {
   const updateShow = (e) => {
     setEpisodes([]);
     setTitle(e.target.value);
+    console.log("UPDATE SHOW");
+    window.sessionStorage.setItem("showTitle", e.target.value);
   }
 
   const setRandom = (e) => {
     e.preventDefault();
-    setTitle(getRandomShow());
+    const randomTitle = getRandomShow();
+    setTitle(randomTitle);
+    console.log("RANDOM SHOW");
+    window.sessionStorage.setItem("showTitle", randomTitle);
   }
 
   const getEpisodes = () => {
@@ -51,7 +56,7 @@ function App() {
   useEffect(() => {
     setIsSearching(true);
     clearTimeout(searchTimeout);
-    setSearchTimeout(setTimeout(() => getEpisodes(), 700));
+    setSearchTimeout(setTimeout(() => getEpisodes(), 1000));
   }, [title]);
 
   return (

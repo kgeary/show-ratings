@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Button, TextField, IconButton } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import { makeStyles } from '@material-ui/core/styles';
@@ -53,15 +53,19 @@ const useStyles = makeStyles((props) => ({
 
 export default function Search(props) {
   const classes = useStyles(props);
+  const inputRef = useRef();
+
+  const clearSearch = (e) => {
+    props.onChange({ target: { value: "" } });
+    inputRef.current.focus();
+  }
 
   return (
     <div className={classes.root}>
       <h1>Show Ratings By Episode</h1>
       <form
         className={classes.form}
-        noValidate
         autoComplete="off"
-        onSubmit={() => { }}
       >
         <TextField
           autoFocus
@@ -71,11 +75,12 @@ export default function Search(props) {
           onChange={props.onChange}
           value={props.title}
           className="TextField"
+          inputRef={inputRef}
           inputProps={{ maxLength: 32 }}
           onKeyPress={(e) => { if (e.which === 13) { e.preventDefault(); } }}
           InputProps={{
             endAdornment: (
-              <IconButton position="end" onClick={() => props.onChange({ target: { value: "" } })}>
+              <IconButton position="end" onClick={clearSearch}>
                 <ClearIcon />
               </IconButton>
             ),
@@ -85,7 +90,8 @@ export default function Search(props) {
       <Button
         onClick={props.setRandom}
         variant={props.title ? "outlined" : "contained"}
-        color="primary">
+        color="primary"
+      >
         Random Show
       </Button>
     </div>
